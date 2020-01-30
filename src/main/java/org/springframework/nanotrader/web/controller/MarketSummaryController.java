@@ -1,5 +1,4 @@
-/*
- * Copyright 2002-2012 the original author or authors.
+/* Copyright 2002-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +14,12 @@
  */
 package org.springframework.nanotrader.web.controller;
 
+import java.util.Locale;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.nanotrader.data.domain.MarketSummary;
+import org.springframework.nanotrader.data.util.CurrencyUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,9 +34,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class MarketSummaryController extends BaseController {
 
   @RequestMapping(value = "/marketSummary", method = RequestMethod.GET)
-  public ResponseEntity<MarketSummary> findMarketSummary() {
-    return new ResponseEntity<MarketSummary>(getTradingServiceFacade().findMarketSummary(), getNoCacheHeaders(),
-                                             HttpStatus.OK);
+  public ResponseEntity<MarketSummary> findMarketSummary(Locale locale) {
+    return new ResponseEntity<MarketSummary>(
+        CurrencyUtils.convertCurrency(getTradingServiceFacade().findMarketSummary(), locale),
+        getNoCacheHeaders(),
+        HttpStatus.OK
+    );
   }
 
   @RequestMapping(value = "/marketSummary", method = RequestMethod.POST)
@@ -43,3 +48,4 @@ public class MarketSummaryController extends BaseController {
   }
 
 }
+
